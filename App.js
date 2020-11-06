@@ -1,9 +1,12 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {makeServer} from "./server";
 import {MenuItem, Place} from "./src/components";
 import {AppLoading} from 'expo';
 import {useFonts} from "expo-font";
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from "@react-navigation/stack";
 
 if (process.env.NODE_ENV === "development") {
   if (window.server) {
@@ -27,6 +30,19 @@ const menuItem = {
   image: 'https://picsum.photos/300/200'
 
 }
+
+function HomeScreen() {
+  return (
+      <View style={styles.container}>
+        <Place {...store}/>
+        <MenuItem {...{...menuItem, image: null}}/>
+        <MenuItem {...{...menuItem, discount: 30}}/>
+      </View>
+  );
+}
+
+const Stack = createStackNavigator();
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     'Sofia Pro Black': require('./assets/fonts/SofiaPro/SofiaProBlack.otf'),
@@ -38,11 +54,11 @@ export default function App() {
     return <AppLoading/>;
   } else {
     return (
-        <View style={styles.container}>
-          <Place {...store}/>
-          <MenuItem {...{...menuItem, image: null}}/>
-          <MenuItem {...{...menuItem, discount: 30}}/>
-        </View>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen}/>
+          </Stack.Navigator>
+        </NavigationContainer>
     );
   }
 }
