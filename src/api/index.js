@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create({
-    baseURL: 'https://api.zecardapio.com.br',
+    baseURL: 'https://api.cardapioh.com.br',
 });
 
 api.interceptors.request.use(async (config) => {
@@ -16,10 +16,10 @@ api.interceptors.request.use(async (config) => {
     return Promise.reject(err);
 });
 
-const getStores = async () => {
-    return await api.get('/api/stores/');
+const getPlaces = async () => {
+    return await api.get('/api/places/');
 };
 
 export {
-    getStores
+    getPlaces
 }

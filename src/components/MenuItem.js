@@ -7,7 +7,7 @@ export default function MenuItem({code, name, description, price, discount, imag
     return (
         <Card containerStyle={styles.container}>
             {detail && image && <Card.Image style={{height: normalize(180, 'height')}} source={{uri: image}}/>}
-            <View style={styles.titleContainer}>
+            <View style={styles.innerContainer}>
                 <Card.FeaturedTitle style={styles.title}>
                     {code}. {name}
                 </Card.FeaturedTitle>
@@ -15,7 +15,7 @@ export default function MenuItem({code, name, description, price, discount, imag
                 <Badge
                     textStyle={styles.badgeTextStyle}
                     badgeStyle={styles.badgeStyle}
-                    containerStyle={styles.discount}
+                    containerStyle={styles.badgeContainerStyle}
                     value={`- ${discount}%`}/>
                 }
             </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         marginTop: normalize(10, 'height'),
         marginLeft: normalize(10),
     },
-    titleContainer: {
+    innerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         color: 'grey',
         fontSize: normalize(12)
     },
-    discount: {
+    badgeContainerStyle: {
         marginTop: normalize(10, 'height'),
         marginRight: normalize(10),
     },
