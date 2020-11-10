@@ -1,49 +1,46 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {makeServer} from "./server";
 import {AppLoading} from 'expo';
 import {useFonts} from "expo-font";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from "@react-navigation/stack";
-import HomeScreen from './src/screens/HomeScreen'
+import makeServer from "./server";
+import {HomeScreen, MenuScreen} from "./src/screens";
+
+const SofiaProBlack = require('./assets/fonts/SofiaPro/SofiaProBlack.otf')
+const SofiaProLight = require('./assets/fonts/SofiaPro/SofiaProLight.otf')
+const SofiaProSemiBold = require('./assets/fonts/SofiaPro/SofiaProSemiBold.otf')
 
 if (process.env.NODE_ENV === "development") {
-  if (window.server) {
-    window.server.shutdown();
-  }
-  window.server = makeServer();
+    if (window.server) {
+        window.server.shutdown();
+    }
+    window.server = makeServer();
 }
-
-
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
-    'Sofia Pro Black': require('./assets/fonts/SofiaPro/SofiaProBlack.otf'),
-    'Sofia Pro Light': require('./assets/fonts/SofiaPro/SofiaProLight.otf'),
-    'Sofia Pro Semi Bold': require('./assets/fonts/SofiaPro/SofiaProSemiBold.otf'),
-  });
+    const [fontsLoaded] = useFonts({
+        'Sofia Pro Black': SofiaProBlack,
+        'Sofia Pro Light': SofiaProLight,
+        'Sofia Pro Semi Bold': SofiaProSemiBold,
+    });
 
-  if (!fontsLoaded) {
-    return <AppLoading/>;
-  } else {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-  }
+    let Component;
+
+    if (!fontsLoaded) {
+        Component = <AppLoading/>;
+    } else {
+        Component = (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown: false}}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+    }
+    return Component
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-});

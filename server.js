@@ -1,181 +1,102 @@
-import {createServer} from "miragejs"
+import {belongsTo, createServer, Factory, hasMany, Model} from "miragejs"
 
 const modified = new Date().toLocaleDateString();
 
-export function makeServer({environment = "development"} = {}) {
+export default function makeServer({environment = "development"} = {}) {
     return createServer({
         environment,
+        models: {
+            place: Model.extend({
+                menus: hasMany()
+            }),
+            menu: Model.extend({
+                place: belongsTo(),
+            })
+        },
+        factories: {
+            place: Factory.extend({
+                id(i) {
+                    return i + 1
+                },
+                name(i) {
+                    return `Place ${i + 1}`
+                },
+                address(i) {
+                    return `Street ${i + 1}`
+                },
+                modified,
+                image: 'https://picsum.photos/300/200',
+                afterCreate(place, server) {
+                    server.createList('menu', 5, {place})
+                }
+            }),
+            menu: Factory.extend({
+                id(i) {
+                    return i + 1
+                },
+                category(i) {
+                    return `Category ${i + 1}`
+                },
+                data: [
+                    {
+                        code: 1,
+                        name: 'One',
+                        description: 'Description One',
+                        price: 10,
+                        discount: 10,
+                        image: 'https://picsum.photos/300/200'
+
+                    },
+                    {
+                        code: 2,
+                        name: 'Two',
+                        description: 'Description Two',
+                        price: 20,
+                        discount: 5,
+                        image: 'https://picsum.photos/300/200'
+
+                    },
+                    {
+                        code: 3,
+                        name: 'Three',
+                        description: 'Description Three',
+                        price: 30,
+                        discount: null,
+                        image: 'https://picsum.photos/300/200'
+
+                    }
+                ],
+
+            })
+        },
+
+        seeds(server) {
+            server.createList('place', 10)
+        },
         routes() {
             this.urlPrefix = 'https://api.cardapioh.com.br';
             this.namespace = 'api';
-            this.get("places", () => [
-                {
-                    id: "1",
-                    name: "Place 1",
-                    address: "Street One, 1",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "2",
-                    name: "Place 2",
-                    address: "Street Two, 2",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "3",
-                    name: "Place 3",
-                    address: "Street Three, 3",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "4",
-                    name: "Place 4",
-                    address: "Street Four, 4",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "5",
-                    name: "Place 5",
-                    address: "Street Five, 5",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "6",
-                    name: "Place 6",
-                    address: "Street Six, 6",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "7",
-                    name: "Place 7",
-                    address: "Street Seven, 7",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "8",
-                    name: "Place 8",
-                    address: "Street Eight, 8",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "9",
-                    name: "Place 9",
-                    address: "Street Nine, 9",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-                {
-                    id: "10",
-                    name: "Place 10",
-                    address: "Street Ten, 10",
-                    modified: modified,
-                    image: 'https://picsum.photos/300/200'
-                },
-
-            ]);
-            this.get("places/:id/menu", () => [
-                {
-                    category: 'One',
-                    items: [
-                        {
-                            code: 1,
-                            name: 'One',
-                            description: 'Description One',
-                            price: '$1',
-                            discount: '10',
-                            image: 'https://picsum.photos/300/200'
-
-                        },
-                        {
-                            code: 2,
-                            name: 'Two',
-                            description: 'Description Two',
-                            price: '$2',
-                            discount: '20',
-                            image: 'https://picsum.photos/300/200'
-
-                        }
-                    ]
-                },
-                {
-                    category: 'Two',
-                    items: [
-                        {
-                            code: 1,
-                            name: 'One',
-                            description: 'Description One',
-                            price: '$1',
-                            discount: '10',
-                            image: 'https://picsum.photos/300/200'
-
-                        },
-                        {
-                            code: 2,
-                            name: 'Two',
-                            description: 'Description Two',
-                            price: '$2',
-                            discount: '20',
-                            image: 'https://picsum.photos/300/200'
-
-                        }
-                    ]
-                },
-                {
-                    category: 'Three',
-                    items: [
-                        {
-                            code: 1,
-                            name: 'One',
-                            description: 'Description One',
-                            price: '$1',
-                            discount: '10',
-                            image: 'https://picsum.photos/300/200'
-
-                        },
-                        {
-                            code: 2,
-                            name: 'Two',
-                            description: 'Description Two',
-                            price: '$2',
-                            discount: '20',
-                            image: 'https://picsum.photos/300/200'
-
-                        }
-                    ]
-                },
-                {
-                    category: 'Four',
-                    items: [
-                        {
-                            code: 1,
-                            name: 'One',
-                            description: 'Description One',
-                            price: '$1',
-                            discount: '10',
-                            image: 'https://picsum.photos/300/200'
-
-                        },
-                        {
-                            code: 2,
-                            name: 'Two',
-                            description: 'Description Two',
-                            price: '$2',
-                            discount: '20',
-                            image: 'https://picsum.photos/300/200'
-
-                        }
-                    ]
+            this.get("/places", function (schema) {
+                const places = schema.places.all()
+                const json = this.serialize(places)
+                return {
+                    "count": json.places.length,
+                    "next": null,
+                    "previous": null,
+                    "results": json.places
                 }
-
-            ])
+            })
+            this.get("/places/:id/menu", function (schema, request) {
+                const place = schema.places.find(request.params.id)
+                const json = this.serialize(place.menus)
+                return {
+                    "count": json.menus.length,
+                    "next": null,
+                    "previous": null,
+                    "results": json.menus
+                }
+            })
         },
+
     })
 }

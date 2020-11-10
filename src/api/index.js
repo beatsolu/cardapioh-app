@@ -20,6 +20,11 @@ const getPlaces = async () => {
     return await api.get('/api/places/');
 };
 
+const getMenu = async (id) => {
+    return await api.get(`/api/places/${id}/menu`);
+};
+
 export {
-    getPlaces
+    getPlaces,
+    getMenu
 }

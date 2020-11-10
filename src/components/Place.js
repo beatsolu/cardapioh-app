@@ -4,24 +4,25 @@ import {Badge, Card, Text} from "react-native-elements";
 import normalize from "react-native-normalize";
 
 
-export default function Place({name, address, image, modified}) {
+export default function Place({name, address, image, modified, onPress}) {
     return (
-        <TouchableOpacity onPress={()=> console.log(name)}>
-            <Card containerStyle={styles.container}>
-                <Card.Image source={{uri: image}}/>
-                <Badge
-                    textStyle={styles.badgeTextStyle}
-                    badgeStyle={styles.badgeStyle}
-                    containerStyle={styles.badgeContainerStyle}
-                    value={`Atualizado em: ${modified}`}/>
-                <Card.FeaturedTitle style={styles.title}>
-                    <Text style={styles.title}>{name}</Text>
-                </Card.FeaturedTitle>
-                <Card.FeaturedSubtitle style={styles.subTitle}>
-                    <Text style={styles.subTitle}>{address}</Text>
-                </Card.FeaturedSubtitle>
-            </Card>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
+        <Card containerStyle={styles.container}>
+          <Card.Image source={{uri: image}} />
+          <Badge
+            textStyle={styles.badgeTextStyle}
+            badgeStyle={styles.badgeStyle}
+            containerStyle={styles.badgeContainerStyle}
+            value={`Atualizado em: ${modified}`}
+          />
+          <Card.FeaturedTitle style={styles.title}>
+            <Text style={styles.title}>{name}</Text>
+          </Card.FeaturedTitle>
+          <Card.FeaturedSubtitle style={styles.subTitle}>
+            <Text style={styles.subTitle}>{address}</Text>
+          </Card.FeaturedSubtitle>
+        </Card>
+      </TouchableOpacity>
 
     )
 }
