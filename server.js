@@ -44,7 +44,7 @@ export default function makeServer({environment = "development"} = {}) {
                         description: 'Description One',
                         price: 10,
                         discount: 10,
-                        image: 'https://picsum.photos/300/200'
+                        image: null
 
                     },
                     {

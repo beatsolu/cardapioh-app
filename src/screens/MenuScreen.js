@@ -1,6 +1,6 @@
 import React, {useEffect, useState,} from "react";
 import {Platform, SafeAreaView, SectionList, StyleSheet, View} from "react-native";
-import {Icon, SearchBar, Text} from "react-native-elements";
+import {Icon, Overlay, SearchBar, Text} from "react-native-elements";
 import normalize from "react-native-normalize";
 import {getMenu} from "../api";
 import {HeaderMenu, ItemMenu} from "../components";
@@ -8,6 +8,7 @@ import {HeaderMenu, ItemMenu} from "../components";
 export default function MenuScreen({navigation, route}) {
     const place = route.params;
     const [menu, setMenu] = useState()
+    const [overlay, setOverlay] = useState({})
     const [search, setSearch] = useState('')
     useEffect(() => {
         getMenu(place.id).then(({data}) => {
@@ -21,38 +22,45 @@ export default function MenuScreen({navigation, route}) {
 
 
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-          <Icon
-            iconStyle={styles.iconTitle}
-            name='arrow-left'
-            type='font-awesome'
-            onPress={() => navigation.navigate('Home')}
-          />
-          <Text style={styles.title}>Cardapioh</Text>
-        </View>
-        <SearchBar
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Pesquise por itens..."
-          containerStyle={styles.searchBarContainerStyle}
-          inputContainerStyle={styles.inputContainerStyle}
-          inputStyle={styles.inputStyle}
-        />
+        <SafeAreaView style={styles.container}>
+            <View style={{flexDirection: 'row'}}>
+                <Icon
+                    iconStyle={styles.iconTitle}
+                    name='arrow-left'
+                    type='font-awesome'
+                    onPress={() => navigation.navigate('Home')}
+                />
+                <Text style={styles.title}>Cardapioh</Text>
+            </View>
+            <SearchBar
+                value={search}
+                onChangeText={setSearch}
+                placeholder="Pesquise por itens..."
+                containerStyle={styles.searchBarContainerStyle}
+                inputContainerStyle={styles.inputContainerStyle}
+                inputStyle={styles.inputStyle}
+            />
 
-        <SectionList
-          sections={menu}
-          keyExtractor={(item, index) => index}
-          onEndReached={(info) => console.log(info)}
-          onEndReachedThreshold={0}
-          ListHeaderComponent={<HeaderMenu place={place} />}
-          renderItem={({item}) => <ItemMenu {...item} detail={false} />}
-          renderSectionHeader={({section}) => (
-            <Text style={styles.header}>{section.category}</Text>
+            <SectionList
+                sections={menu}
+                keyExtractor={(item, index) => index}
+                onEndReached={(info) => console.log(info)}
+                onEndReachedThreshold={0}
+                ListHeaderComponent={<HeaderMenu place={place}/>}
+                renderItem={({item}) => (
+                    <View>
+                        <ItemMenu {...item} detail={false} onPress={() => setOverlay({[item.name]: true})}/>
+                        <Overlay overlayStyle={styles.overlayStyle} isVisible={overlay[item.name] || false}>
+                            <ItemMenu {...item} onPress={() => setOverlay({[item.name]: false})}/>
+                        </Overlay>
+                    </View>
                 )}
-          stickySectionHeadersEnabled
-        />
-      </SafeAreaView>
+                renderSectionHeader={({section}) => (
+                    <Text style={styles.header}>{section.category}</Text>
+                )}
+                stickySectionHeadersEnabled
+            />
+        </SafeAreaView>
     );
 }
 
@@ -103,6 +111,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Sofia Pro Black',
         fontSize: normalize(15),
         backgroundColor: "#fff"
+    },
+    overlayStyle: {
+        width: normalize(300),
+        ...Platform.select({
+            'ios': {height: normalize(328)},
+            'android':{height: normalize(305)},
+        }),
+
+        padding: 0,
     }
 
 })
