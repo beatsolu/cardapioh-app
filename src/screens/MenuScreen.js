@@ -1,9 +1,11 @@
 import React, {useEffect, useState,} from "react";
-import {Platform, SafeAreaView, SectionList, StyleSheet, View} from "react-native";
-import {Icon, Overlay, SearchBar, Text} from "react-native-elements";
-import normalize from "react-native-normalize";
+import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
+import EStyleSheet from "react-native-extended-stylesheet";
+import {Overlay, SearchBar, Text} from "react-native-elements";
+import ModalWeb from 'modal-react-native-web'
 import {getMenu} from "../api";
-import {HeaderMenu, ItemMenu} from "../components";
+import {Header, HeaderMenu, ItemMenu} from "../components";
+
 
 export default function MenuScreen({navigation, route}) {
     const place = route.params;
@@ -20,18 +22,9 @@ export default function MenuScreen({navigation, route}) {
         console.log(search)
     }, [search])
 
-
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
-                <Icon
-                    iconStyle={styles.iconTitle}
-                    name='arrow-left'
-                    type='font-awesome'
-                    onPress={() => navigation.navigate('Home')}
-                />
-                <Text style={styles.title}>Cardapioh</Text>
-            </View>
+        <SafeAreaView style={styles.safeAreaContainer}>
+            <Header/>
             <SearchBar
                 value={search}
                 onChangeText={setSearch}
@@ -40,7 +33,6 @@ export default function MenuScreen({navigation, route}) {
                 inputContainerStyle={styles.inputContainerStyle}
                 inputStyle={styles.inputStyle}
             />
-
             <SectionList
                 sections={menu}
                 keyExtractor={(item, index) => index}
@@ -50,7 +42,12 @@ export default function MenuScreen({navigation, route}) {
                 renderItem={({item}) => (
                     <View>
                         <ItemMenu {...item} detail={false} onPress={() => setOverlay({[item.name]: true})}/>
-                        <Overlay overlayStyle={styles.overlayStyle} isVisible={overlay[item.name] || false}>
+                        <Overlay
+                            overlayStyle={styles.overlayStyle}
+                            ModalComponent={Platform.OS === 'web' ? ModalWeb : Modal}
+                            isVisible={overlay[item.name] || false}
+
+                        >
                             <ItemMenu {...item} onPress={() => setOverlay({[item.name]: false})}/>
                         </Overlay>
                     </View>
@@ -64,62 +61,39 @@ export default function MenuScreen({navigation, route}) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
+const styles = EStyleSheet.create({
+    safeAreaContainer: {
         flex: 1,
-        backgroundColor: '#ffffff',
-    },
-    title: {
-        height: normalize(50, 'height'),
-        marginLeft: normalize(68),
-        marginVertical: normalize(15, 'height'),
-        fontFamily: 'Sofia Pro Black',
-        fontSize: normalize(35),
-    },
-    iconTitle: {
-        ...Platform.select({
-            'ios': {marginTop: normalize(20, "height")},
-            'android': {marginTop: normalize(35, "height")}
-        }),
-        marginLeft: normalize(15),
-        fontFamily: 'Sofia Pro Black',
-        fontSize: normalize(20),
-        textAlign: "center"
+        backgroundColor: '$white',
     },
     searchBarContainerStyle: {
-        width: normalize(360),
-        marginLeft: normalize(6),
-        marginBottom: normalize(10),
-        backgroundColor: '#ffffff',
+        width: '100%',
+        marginVertical: '0.375rem',
+        marginBottom: '0.625rem',
+        backgroundColor: '$white',
         borderTopWidth: 0,
         borderBottomWidth: 0
     },
     inputContainerStyle: {
-        backgroundColor: '#ffffff',
-        borderColor: 'black',
+        backgroundColor: '$white',
+        borderColor: '$black',
         borderLeftWidth: 1,
         borderTopWidth: 1,
         borderRightWidth: 1,
         borderBottomWidth: 1,
     },
     inputStyle: {
-        backgroundColor: '#ffffff'
+        backgroundColor: '$white'
     },
     header: {
-        paddingVertical: normalize(15),
-        marginLeft: normalize(12),
-        fontFamily: 'Sofia Pro Black',
-        fontSize: normalize(15),
-        backgroundColor: "#fff"
+        paddingVertical: '0.937rem',
+        marginLeft: '0.75rem',
+        fontFamily: '$sofiaProBlack',
+        fontSize: '0.937rem',
+        backgroundColor: "$white"
     },
     overlayStyle: {
-        width: normalize(300),
-        ...Platform.select({
-            'ios': {height: normalize(328)},
-            'android':{height: normalize(305)},
-        }),
-
-        padding: 0,
+        width: '22rem'
     }
 
 })

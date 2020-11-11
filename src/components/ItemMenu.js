@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {Badge, Card, Icon, Text} from "react-native-elements";
 import normalize from "react-native-normalize";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 export default function ItemMenu({code, name, description, price, discount, image, detail = true, onPress}) {
     return (
@@ -14,7 +15,7 @@ export default function ItemMenu({code, name, description, price, discount, imag
                     color="#fff"
                     containerStyle={styles.iconContainerStyle}
                 />}
-                {detail && image && <Card.Image style={{height: normalize(180, 'height')}} source={{uri: image}}/>}
+                {detail && image && <Card.Image style={styles.image} source={{uri: image}}/>}
                 <View style={styles.innerContainer}>
                     <Card.FeaturedTitle style={styles.title}>
                         <Text style={styles.title}>
@@ -50,63 +51,66 @@ export default function ItemMenu({code, name, description, price, discount, imag
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
         padding: 0,
         borderWidth: 1,
-        borderColor: "#000000",
-        fontFamily: 'Sofia Pro Black'
+        borderColor: "$black",
+        marginBottom: '1rem'
     },
     iconContainerStyle: {
         position: "absolute",
         zIndex: 1,
         right: 5
     },
+    image:{
+        height: '11.25rem',
+    },
     title: {
         color: 'black',
-        fontFamily: 'Sofia Pro Black',
-        marginTop: normalize(10, 'height'),
-        marginLeft: normalize(10),
+        fontFamily: '$sofiaProBlack',
+        marginTop: '0.625rem',
+        marginLeft: '0.625rem',
     },
     innerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     subTitle: {
-        color: 'grey',
-        fontFamily: 'Sofia Pro Light',
-        marginLeft: normalize(10),
-        marginVertical: normalize(3, 'height'),
+        color: '$grey',
+        fontFamily: '$sofiaProLight',
+        marginLeft: '0.625rem',
+        marginVertical: '0.187rem'
 
     },
     price: {
-        color: 'black',
-        fontFamily: 'Sofia Pro Black',
-        marginLeft: normalize(10),
-        marginVertical: normalize(3, 'height'),
+        color: '$black',
+        fontFamily: '$sofiaProBlack',
+        marginLeft: '0.625rem',
+        marginVertical: '0.187rem'
     },
     priceContainer: {
         flexDirection: 'row'
     },
     priceDiscount: {
         textDecorationLine: 'line-through',
-        color: 'grey',
-        fontSize: normalize(12)
+        color: '$grey',
+        fontSize: '0.75rem'
     },
     badgeContainerStyle: {
-        marginTop: normalize(10, 'height'),
-        marginRight: normalize(10),
+        marginTop: '0.625rem',
+        marginRight: '0.625rem',
     },
     badgeStyle: {
-        width: normalize(51),
-        height: normalize(23),
-        backgroundColor: '#E2AAA9',
-        borderRadius: normalize(20)
+        width: '3.187rem',
+        height: '1.437rem',
+        backgroundColor: '$discount',
+        borderRadius: '1.25rem'
     },
     badgeTextStyle: {
-        color: '#000000',
-        fontSize: normalize(15),
-        fontFamily: 'Sofia Pro Black',
-        marginVertical: normalize(5),
+        color: '$black',
+        fontSize: '0.937rem',
+        fontFamily: '$sofiaProBlack',
+        marginVertical: '0.3rem',
     }
 })

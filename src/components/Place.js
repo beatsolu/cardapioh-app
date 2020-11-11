@@ -1,66 +1,50 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from "react-native";
-import {Badge, Card, Text} from "react-native-elements";
-import normalize from "react-native-normalize";
+import {TouchableOpacity} from "react-native";
+import {Card, Text} from "react-native-elements";
+import EStyleSheet from "react-native-extended-stylesheet";
+import Updated from "./Updated";
 
 
 export default function Place({name, address, image, modified, onPress}) {
     return (
-      <TouchableOpacity onPress={onPress}>
-        <Card containerStyle={styles.container}>
-          <Card.Image source={{uri: image}} />
-          <Badge
-            textStyle={styles.badgeTextStyle}
-            badgeStyle={styles.badgeStyle}
-            containerStyle={styles.badgeContainerStyle}
-            value={`Atualizado em: ${modified}`}
-          />
-          <Card.FeaturedTitle style={styles.title}>
-            <Text style={styles.title}>{name}</Text>
-          </Card.FeaturedTitle>
-          <Card.FeaturedSubtitle style={styles.subTitle}>
-            <Text style={styles.subTitle}>{address}</Text>
-          </Card.FeaturedSubtitle>
-        </Card>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
+            <Card containerStyle={styles.container}>
+                <Card.Image source={{uri: image}}/>
+                <Updated modified={modified}/>
+                <Card.FeaturedTitle style={styles.title}>
+                    <Text style={styles.title}>{name}</Text>
+                </Card.FeaturedTitle>
+                <Card.FeaturedSubtitle style={styles.subTitle}>
+                    <Text style={styles.subTitle}>{address}</Text>
+                </Card.FeaturedSubtitle>
+            </Card>
+        </TouchableOpacity>
 
     )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
-        padding: normalize(0),
+        padding: 0,
         borderWidth: 1,
-        borderColor: "#000000",
+        borderColor: "$black",
     },
     innerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     title: {
-        fontFamily: 'Sofia Pro Black',
-        color: 'black',
-        marginTop: normalize(10, 'height'),
-        marginLeft: normalize(10)
+        fontFamily: '$sofiaProBlack',
+        fontSize: '1.562rem',
+        color: '$black',
+        marginTop: '0.625rem',
+        marginLeft: '0.625rem',
     },
     subTitle: {
-        fontFamily: 'Sofia Pro Light',
+        fontFamily: '$sofiaProLight',
+        fontSize: '0.937rem',
         color: 'grey',
-        marginLeft: normalize(10)
-    },
-    badgeStyle: {
-        width: normalize(150),
-        height: normalize(20, 'height'),
-        backgroundColor: '#D7E8FE',
-        borderRadius: normalize(20)
-    },
-    badgeTextStyle: {
-        color: '#000000',
-        fontSize: normalize(10),
-        fontFamily: 'Sofia Pro Semi Bold',
-    },
-    badgeContainerStyle: {
-        marginTop: normalize(10, 'height'),
-        marginLeft: normalize(-180)
+        marginVertical: '0.625rem',
+        marginLeft: '0.625rem'
     }
 })

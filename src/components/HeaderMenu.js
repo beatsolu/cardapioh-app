@@ -1,68 +1,48 @@
 import React from "react";
-import {Image, StyleSheet, View} from "react-native";
-import {Badge, Text} from "react-native-elements";
-import normalize from "react-native-normalize";
+import {Image, View, Text} from "react-native";
+import EStyleSheet from "react-native-extended-stylesheet";
+import Updated from "./Updated";
 
 export default function HeaderMenu({place}) {
     return (
-      <View style={styles.container}>
-        <Image source={{uri: place.image}} style={styles.image} />
-        <Badge
-          textStyle={styles.badgeTextStyle}
-          badgeStyle={styles.badgeStyle}
-          containerStyle={styles.badgeContainerStyle}
-          value={`Atualizado em: ${place.modified}`}
-        />
-        <Text style={styles.title}>{place.name}</Text>
-        <Text style={styles.subTitle}>{place.address}</Text>
-      </View>
-)
+        <View style={styles.container}>
+            <Image source={{uri: place.image}} style={styles.image}/>
+            <Updated modified={place.modified}/>
+            <Text style={styles.title}>{place.name}</Text>
+            <Text style={styles.subTitle}>{place.address}</Text>
+        </View>
+    )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '$white',
     },
     image: {
-        width: normalize(500),
-        height: normalize(200, 'height')
+        width: '100%',
+        height: '12.5rem'
     },
     title: {
-        fontFamily: 'Sofia Pro Black',
-        fontSize: normalize(25),
-        color: 'black',
-        marginTop: normalize(10, 'height'),
-        marginLeft: normalize(10)
+        fontFamily: '$sofiaProBlack',
+        fontSize: '1.562rem',
+        color: '$black',
+        marginTop: '0.625rem',
+        marginLeft: '0.625rem',
     },
     subTitle: {
-        fontFamily: 'Sofia Pro Light',
-        fontSize: normalize(15),
+        fontFamily: '$sofiaProLight',
+        fontSize: '0.937rem',
         color: 'grey',
-        marginVertical: normalize(10, 'height'),
-        marginLeft: normalize(10)
+        marginVertical: '0.625rem',
+        marginLeft: '0.625rem'
     },
     header: {
-        paddingVertical: normalize(15),
-        marginLeft: normalize(12),
-        fontFamily: 'Sofia Pro Black',
-        fontSize: normalize(20),
-        backgroundColor: "#fff"
-    },
-    badgeStyle: {
-        width: normalize(150),
-        height: normalize(20, 'height'),
-        backgroundColor: '#D7E8FE',
-        borderRadius: normalize(20)
-    },
-    badgeTextStyle: {
-        color: '#000000',
-        fontSize: normalize(10),
-        fontFamily: 'Sofia Pro Semi Bold',
-    },
-    badgeContainerStyle: {
-        marginTop: normalize(10, 'height'),
-        marginLeft: normalize(-210)
+        paddingVertical: '0.937rem',
+        marginLeft: '0.75rem',
+        fontFamily: '$sofiaProBlack',
+        fontSize: '1.25rem',
+        backgroundColor: "$white"
     }
 
 })
