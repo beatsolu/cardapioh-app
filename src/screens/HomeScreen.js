@@ -1,5 +1,5 @@
 import React, {useEffect, useState,} from "react";
-import {FlatList, SafeAreaView, StyleSheet, View} from "react-native";
+import {FlatList, Platform, SafeAreaView, StyleSheet, View} from "react-native";
 import {Icon, SearchBar, Text} from "react-native-elements";
 import normalize from "react-native-normalize";
 import {getPlaces} from "../api";
@@ -65,8 +65,15 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     searchBarContainerStyle: {
-        width: normalize(300),
-        marginLeft: normalize(6),
+        ...Platform.select({
+            'ios': {
+                width: normalize(320),
+                marginLeft: normalize(6),
+            },
+            'android': {
+                width: normalize(325),
+                marginLeft: normalize(9)}
+        }),
         backgroundColor: '#ffffff',
         borderTopWidth: 0,
         borderBottomWidth: 0
@@ -83,7 +90,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff'
     },
     iconContainerStyle: {
-        marginTop: normalize(12),
+        ...Platform.select({
+            'ios':{marginTop: normalize(12)},
+            'android': { marginTop: normalize(15)}
+        }),
         marginRight: normalize(25)
     },
     iconStyle: {
