@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {TouchableOpacity, View} from "react-native";
 import {Badge, Card, Icon, Text} from "react-native-elements";
-import normalize from "react-native-normalize";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 export default function ItemMenu({code, name, description, price, discount, image, detail = true, onPress}) {
