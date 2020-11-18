@@ -2,14 +2,14 @@ import React from "react";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {View} from "react-native";
 import {Icon, Text} from "react-native-elements";
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 
 export default function Header() {
-    const route = useRoute();
     const navigation = useNavigation()
+    const state = useNavigationState(state => state);
     return (
         <View>
-            {route.name !== "Home" && <Icon
+            {state.routes.length > 1 && <Icon
                 containerStyle={styles.iconContainerStyle}
                 name='arrow-left'
                 type='font-awesome'

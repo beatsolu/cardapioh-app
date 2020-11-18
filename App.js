@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {Text} from "react-native";
 import {AppLoading} from 'expo';
 import {useFonts} from "expo-font";
 import {NavigationContainer} from '@react-navigation/native';
@@ -34,6 +35,18 @@ EStyleSheet.build({
 
 const Stack = createStackNavigator();
 
+const config = {
+    screens: {
+        Home: '/',
+        Menu: 'menu/:id',
+    },
+};
+
+const linking = {
+    prefixes: ['cardapioh://', ''],
+    config,
+};
+
 export default function App() {
     const [fontsLoaded] = useFonts({
         'Sofia Pro Black': SofiaProBlack,
@@ -47,7 +60,7 @@ export default function App() {
         Component = <AppLoading/>;
     } else {
         Component = (
-            <NavigationContainer>
+            <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
                 <Stack.Navigator>
                     <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown: false}}/>
