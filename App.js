@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {Text} from "react-native";
-import {AppLoading} from 'expo';
 import {useFonts} from "expo-font";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from "@react-navigation/stack";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import makeServer from "./server";
-import {HomeScreen, MenuScreen} from "./src/screens";
+import {HomeScreen, MenuScreen, SplashScreen} from "./src/screens";
 import Dimensions from "react-native-web/src/exports/Dimensions";
 
 const SofiaProBlack = require('./assets/fonts/SofiaPro/SofiaProBlack.otf')
@@ -48,7 +47,8 @@ const linking = {
 };
 
 export default function App() {
-    const [fontsLoaded] = useFonts({
+    const [isLoaded, setIsLoaded] = useState(false)
+    useFonts({
         'Sofia Pro Black': SofiaProBlack,
         'Sofia Pro Light': SofiaProLight,
         'Sofia Pro Semi Bold': SofiaProSemiBold,
@@ -56,8 +56,8 @@ export default function App() {
 
     let Component;
 
-    if (!fontsLoaded) {
-        Component = <AppLoading/>;
+    if (!isLoaded) {
+        Component = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
     } else {
         Component = (
             <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-const Splash = () => {
+const SplashScreen = ({onAnimationFinish}) => {
     return (
         <View
             style={{
@@ -20,12 +20,10 @@ const Splash = () => {
                 autoPlay
                 loop={false}
                 speed={1.2}
-                onAnimationFinish={() => {
-                    console.log('Redirect Here')
-                }}
+                onAnimationFinish={onAnimationFinish}
             />
         </View>
     );
 };
 
-export default Splash;
+export default SplashScreen;
