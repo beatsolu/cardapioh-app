@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {Text} from "react-native";
+import {Dimensions, Platform} from "react-native";
 import {useFonts} from "expo-font";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from "@react-navigation/stack";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import makeServer from "./server";
 import {HomeScreen, MenuScreen, SplashScreen} from "./src/screens";
-import Dimensions from "react-native-web/src/exports/Dimensions";
 
 const SofiaProBlack = require('./assets/fonts/SofiaPro/SofiaProBlack.otf')
 const SofiaProLight = require('./assets/fonts/SofiaPro/SofiaProLight.otf')
@@ -48,19 +47,18 @@ const linking = {
 
 export default function App() {
     const [isLoaded, setIsLoaded] = useState(false)
+    const Splash = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
     useFonts({
         'Sofia Pro Black': SofiaProBlack,
         'Sofia Pro Light': SofiaProLight,
         'Sofia Pro Semi Bold': SofiaProSemiBold,
     });
-
     let Component;
-
     if (!isLoaded) {
-        Component = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
+        Component =  Splash
     } else {
         Component = (
-            <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+            <NavigationContainer linking={linking}>
                 <Stack.Navigator>
                     <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown: false}}/>
