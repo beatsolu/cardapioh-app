@@ -3,7 +3,7 @@
     "name": "Cardapioh",
     "slug": "cardapioh",
     "version": "1.0.0",
-    "scheme": "cardapioh://",
+    "scheme": "cardapioh",
     "assetBundlePatterns": [
       "**/*"
     ]

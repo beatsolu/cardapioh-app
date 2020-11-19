@@ -5,7 +5,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 
 export default function ItemMenu({code, name, description, price, discount, image, detail = true, onPress}) {
     return (
-        <TouchableOpacity onPress={image && onPress}>
+        <TouchableOpacity onPress={onPress} disabled={!image}>
             <Card containerStyle={styles.container}>
                 {detail &&
                 <Icon

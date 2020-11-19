@@ -53,9 +53,13 @@ export default function App() {
         'Sofia Pro Light': SofiaProLight,
         'Sofia Pro Semi Bold': SofiaProSemiBold,
     });
-    let Component;
+    let Component = null;
     if (!isLoaded) {
-        Component =  Splash
+        if (Platform.OS === 'web') {
+            setIsLoaded(true)
+        } else {
+            Component = Splash
+        }
     } else {
         Component = (
             <NavigationContainer linking={linking}>
