@@ -1,10 +1,9 @@
 {
-  "name": "cardapioh",
-  "displayName": "cardapioh",
   "expo": {
-    "name": "cardapioh",
+    "name": "Cardapioh",
     "slug": "cardapioh",
     "version": "1.0.0",
+    "scheme": "cardapioh://",
     "assetBundlePatterns": [
       "**/*"
     ]
