@@ -2,18 +2,18 @@ import React from "react";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {View} from "react-native";
 import {Icon, Text} from "react-native-elements";
-import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 export default function Header() {
+    const route = useRoute();
     const navigation = useNavigation()
-    const state = useNavigationState(state => state);
     return (
         <View>
-            {state.routes.length > 1 && <Icon
+            {route.name !== "Home" && <Icon
                 containerStyle={styles.iconContainerStyle}
                 name='arrow-left'
                 type='font-awesome'
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate('Home')}
             />}
             <Text style={styles.title}>Cardapioh</Text>
         </View>
