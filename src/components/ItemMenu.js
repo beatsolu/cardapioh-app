@@ -27,7 +27,7 @@ export default function ItemMenu({code, name, description, description_english, 
                             {`R$ ${(price - (price * discount) / 100).toFixed(2)}`}
                         </Text>
                     )}
-                    {discount && <Text style={[styles.discountStyle, {textAlign: 'center'}]}>{`-${discount}%`}</Text>}
+                    {discount && <Text style={styles.discountStyle}>{`-${discount}%`}</Text>}
                 </View>
             </Card>
         </TouchableOpacity>
@@ -75,7 +75,7 @@ const styles = EStyleSheet.create({
         marginVertical: '0.187rem'
     },
     priceContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     priceDiscount: {
         textDecorationLine: 'line-through',
@@ -85,17 +85,13 @@ const styles = EStyleSheet.create({
     discountStyle: {
         position: 'absolute',
         right: '0.2rem',
+        bottom: '0.2rem',
         width: '2.8rem',
         height: '1.1rem',
-        '@media ios': {
-            paddingTop: '0.125rem',
-            paddingLeft: '0.2rem',
-        },
-        '@media android': {
-            height: '1.35rem',
-            paddingLeft: '0.4rem',
-            marginBottom: '2rem'
-        },
+        paddingTop: '0.185rem',
+        paddingLeft: '0.4rem',
+        includeFontPadding: false,
+        textAlignVertical: 'center',
         backgroundColor: '$discount',
         borderRadius: 10,
         color: '$black',

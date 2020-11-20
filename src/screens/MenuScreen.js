@@ -5,34 +5,43 @@ import {Overlay, SearchBar, Text} from "react-native-elements";
 import ModalWeb from 'modal-react-native-web'
 import {getMenu, searchItem} from "../api";
 import {Header, HeaderMenu, ItemMenu} from "../components";
-import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
+import {useDebouncedEffect} from "../hooks";
 
 
 export default function MenuScreen({navigation, route}) {
     const [place, setPlace] = useState({})
+    const [sessions, setSessions] = useState([])
     const [overlay, setOverlay] = useState({})
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState()
 
-    useEffect(() => {
-        getMenu(route.params.id).then(({data}) => {
-            setPlace(data)
-        })
-    }, [])
+    function normalizeSessions(data) {
+        const results = data.length;
+        const plural = `${results > 1 ? 's:' : ':'} ${results}`
+        return [{
+            name: `Encontrado${plural}`,
+            name_english: `Found${plural}`,
+            data
+        }];
+    }
 
     useDebouncedEffect(() => {
-        if (search !== '') {
+        if (search) {
             searchItem(route.params.id, search).then(({data}) => {
-                setPlace({...place, sessions: [{data}]})
+                setSessions(normalizeSessions(data))
+            })
+        } else {
+            getMenu(route.params.id).then(({data}) => {
+                setPlace(data)
+                setSessions(data.sessions)
             })
         }
     }, 300, [search])
-
-
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
             <Header/>
             <SearchBar
                 value={search}
+                onFocus={() => setSessions([])}
                 onChangeText={setSearch}
                 placeholder="Pesquise por itens..."
                 containerStyle={styles.searchBarContainerStyle}
@@ -40,11 +49,9 @@ export default function MenuScreen({navigation, route}) {
                 inputStyle={styles.inputStyle}
             />
             <SectionList
-                sections={place.sessions}
+                sections={sessions}
                 keyExtractor={(item, index) => index}
-                onEndReached={(info) => console.log(info)}
-                onEndReachedThreshold={0}
-                ListHeaderComponent={<HeaderMenu place={place}/>}
+                ListHeaderComponent={!search && sessions.length > 0 && <HeaderMenu place={place}/>}
                 renderItem={({item}) => (
                     <View>
                         <ItemMenu {...item} detail={false} onPress={() => setOverlay({[item.name]: true})}/>
@@ -52,9 +59,8 @@ export default function MenuScreen({navigation, route}) {
                             overlayStyle={styles.overlayStyle}
                             ModalComponent={Platform.OS === 'web' ? ModalWeb : Modal}
                             isVisible={overlay[item.name] || false}
-
                         >
-                            <ItemMenu {...item}  onPress={() => setOverlay({[item.name]: false})}/>
+                            <ItemMenu {...item} onPress={() => setOverlay({[item.name]: false})}/>
                         </Overlay>
                     </View>
                 )}

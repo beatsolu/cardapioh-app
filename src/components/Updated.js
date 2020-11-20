@@ -4,7 +4,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 
 export default function Updated({modified}) {
     return (
-        <Text style={styles.textStyle}>
+        <Text style={styles.textStyle} allowFontScaling={false}>
             {`Atualizado em: ${new Date(modified).toLocaleDateString()}`}
         </Text>
     )
@@ -23,7 +23,7 @@ const styles = EStyleSheet.create({
         backgroundColor: '$updated',
         fontSize: '0.625rem',
         fontFamily: '$sofiaProSemiBold',
-        overflow: 'hidden'
+        overflow: 'hidden',
     }
 
 })

@@ -12,12 +12,12 @@ const SofiaProBlack = require('./assets/fonts/SofiaPro/SofiaProBlack.otf')
 const SofiaProLight = require('./assets/fonts/SofiaPro/SofiaProLight.otf')
 const SofiaProSemiBold = require('./assets/fonts/SofiaPro/SofiaProSemiBold.otf')
 
-if (process.env.NODE_ENV === "development") {
-    if (window.server) {
-        window.server.shutdown();
-    }
-    window.server = makeServer();
-}
+// if (process.env.NODE_ENV === "development") {
+//     if (window.server) {
+//         window.server.shutdown();
+//     }
+//     window.server = makeServer();
+// }
 
 EStyleSheet.build({
     $rem: Dimensions.get('window').width > 375 ? 18 : 16,
