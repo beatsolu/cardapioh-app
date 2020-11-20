@@ -5,7 +5,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 export default function Updated({modified}) {
     return (
         <Text style={styles.textStyle}>
-            {`Atualizado em: ${modified}`}
+            {`Atualizado em: ${new Date(modified).toLocaleDateString()}`}
         </Text>
     )
 }

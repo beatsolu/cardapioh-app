@@ -1,99 +1,74 @@
 import {belongsTo, createServer, Factory, hasMany, Model} from "miragejs"
 
-const modified = new Date().toLocaleDateString();
+const modified = new Date();
 
 export default function makeServer({environment = "development"} = {}) {
     return createServer({
         environment,
-        models: {
-            place: Model.extend({
-                menus: hasMany()
-            }),
-            menu: Model.extend({
-                place: belongsTo(),
-            })
-        },
-        factories: {
-            place: Factory.extend({
-                id(i) {
-                    return i + 1
-                },
-                name(i) {
-                    return `Place ${i + 1}`
-                },
-                address(i) {
-                    return `Street ${i + 1}`
-                },
-                modified,
-                image: 'https://picsum.photos/300/200',
-                afterCreate(place, server) {
-                    server.createList('menu', 5, {place})
-                }
-            }),
-            menu: Factory.extend({
-                id(i) {
-                    return i + 1
-                },
-                category(i) {
-                    return `Category ${i + 1}`
-                },
-                data: [
-                    {
-                        code: 1,
-                        name: 'One',
-                        description: 'Description One',
-                        price: 10,
-                        discount: 10,
-                        image: null
-
-                    },
-                    {
-                        code: 2,
-                        name: 'Two',
-                        description: 'Description Two',
-                        price: 20,
-                        discount: 5,
-                        image: 'https://picsum.photos/300/200'
-
-                    },
-                    {
-                        code: 3,
-                        name: 'Three',
-                        description: 'Description Three',
-                        price: 30,
-                        discount: null,
-                        image: 'https://picsum.photos/300/200'
-
-                    }
-                ],
-
-            })
-        },
-
-        seeds(server) {
-            server.createList('place', 10)
-        },
         routes() {
             this.urlPrefix = 'https://api.cardapioh.com.br';
             this.namespace = 'api';
-            this.get("/places", function (schema) {
-                const places = schema.places.all()
-                const json = this.serialize(places)
-                return {
-                    "count": json.places.length,
-                    "next": null,
-                    "previous": null,
-                    "results": json.places
-                }
+            this.get("/places", function () {
+                return [{
+                        "id": 1,
+                        "name": "Kite Cabana Lounge",
+                        "created": "2020-11-19T21:59:35.196575Z",
+                        "modified": modified,
+                        "phone": "(85) 98818-1966",
+                        "address": "R. Olinto Feitosa Costa, s/n - Praia de Cumbuco, Caucaia - CE, 61619-110",
+                        "image": "http://192.168.1.3:8000/media/places/kitekabana.jpg",
+                        "user": null
+                    }]
+
             })
-            this.get("/places/:id/menu", function (schema, request) {
-                const place = schema.places.find(request.params.id)
-                const json = this.serialize(place.menus)
+            this.get("/places/:id", function () {
                 return {
-                    "count": json.menus.length,
-                    "next": null,
-                    "previous": null,
-                    "results": json.menus
+                    "id": 1,
+                    "sessions": [
+                        {
+                            "id": 1,
+                            "data": [
+                                {
+                                    "id": 1,
+                                    "name": "Camarão ao alho e óleo (300 G)",
+                                    "created": "2020-11-19T22:02:16.366266Z",
+                                    "modified": modified,
+                                    "code": "001",
+                                    "description": "Camarão salteado ao azeite de oliva e alho",
+                                    "description_english": "Whole shrimp fried in oil and garlic",
+                                    "price": "45.00",
+                                    "discount": null,
+                                    "image": null,
+                                    "session": 1
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "Ensopadinho de caranguejo (150 G)",
+                                    "created": "2020-11-19T22:44:14.332740Z",
+                                    "modified": modified,
+                                    "code": "002",
+                                    "description": "Carne de caranguejo refogado com verduras e leite de coco",
+                                    "description_english": "Minced crab meat garnished whith vegetables and coconut milk",
+                                    "price": "29.00",
+                                    "discount": null,
+                                    "image": "http://192.168.1.3:8000/media/items/ensopadinho.jpg",
+                                    "session": 1
+                                }
+                            ],
+                            "name": "Entradas e Petiscos",
+                            "created": "2020-11-19T21:59:41.472968Z",
+                            "modified": "2020-11-19T22:52:11.970057Z",
+                            "name_english": "Starters and Savory Snacks",
+                            "place": 1
+                        }
+                    ],
+                    "name": "Kite Cabana Lounge",
+                    "created": "2020-11-19T21:59:35.196575Z",
+                    "modified": modified,
+                    "phone": "(85) 98818-1966",
+                    "address": "R. Olinto Feitosa Costa, s/n - Praia de Cumbuco, Caucaia - CE, 61619-110",
+                    "image": "http://192.168.1.3:8000/media/places/kitekabana.jpg",
+                    "user": null
                 }
             })
         },

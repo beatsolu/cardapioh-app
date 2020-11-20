@@ -2,10 +2,11 @@ import React from 'react';
 import {TouchableOpacity} from "react-native";
 import {Card, Text} from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
+import * as Linking from 'expo-linking';
 import Updated from "./Updated";
 
 
-export default function Place({name, address, image, modified, onPress}) {
+export default function Place({name, address, phone, image, modified, onPress}) {
     return (
         <TouchableOpacity onPress={onPress}>
             <Card containerStyle={styles.container}>
@@ -15,7 +16,9 @@ export default function Place({name, address, image, modified, onPress}) {
                     <Text style={styles.title}>{name}</Text>
                 </Card.FeaturedTitle>
                 <Card.FeaturedSubtitle style={styles.subTitle}>
-                    <Text style={styles.subTitle}>{address}</Text>
+                    <Text style={styles.subTitle}>{address} -
+                        <Text style={styles.phone} onPress={() => Linking.openURL(`tel:${phone}`)}> {phone}</Text>
+                    </Text>
                 </Card.FeaturedSubtitle>
             </Card>
         </TouchableOpacity>
@@ -46,5 +49,13 @@ const styles = EStyleSheet.create({
         color: 'grey',
         marginVertical: '0.625rem',
         marginLeft: '0.625rem'
+    },
+    phone:{
+        fontFamily: '$sofiaProBlack',
+        fontSize: '0.937rem',
+        color: '$black',
+        marginVertical: '0.625rem',
+        marginLeft: '0.625rem'
     }
+
 })

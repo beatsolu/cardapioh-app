@@ -21,10 +21,15 @@ const getPlaces = async () => {
 };
 
 const getMenu = async (id) => {
-    return await api.get(`/api/places/${id}/menu`);
+    return await api.get(`/api/places/${id}/`);
+};
+
+const searchItem = async (session, search) => {
+    return await api.get(`/api/items/?session=${session}&search=${search}`);
 };
 
 export {
     getPlaces,
-    getMenu
+    getMenu,
+    searchItem
 }

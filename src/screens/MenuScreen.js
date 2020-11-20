@@ -3,24 +3,30 @@ import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {Overlay, SearchBar, Text} from "react-native-elements";
 import ModalWeb from 'modal-react-native-web'
-import {getMenu} from "../api";
+import {getMenu, searchItem} from "../api";
 import {Header, HeaderMenu, ItemMenu} from "../components";
+import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
 
 
 export default function MenuScreen({navigation, route}) {
-    const place = route.params;
-    const [menu, setMenu] = useState()
+    const [place, setPlace] = useState({})
     const [overlay, setOverlay] = useState({})
     const [search, setSearch] = useState('')
-    useEffect(() => {
-        getMenu(place.id).then(({data}) => {
-            setMenu(data.results)
-        }).catch()
-    }, []);
 
     useEffect(() => {
-        console.log(search)
-    }, [search])
+        getMenu(route.params.id).then(({data}) => {
+            setPlace(data)
+        })
+    }, [])
+
+    useDebouncedEffect(() => {
+        if (search !== '') {
+            searchItem(route.params.id, search).then(({data}) => {
+                setPlace({...place, sessions: [{data}]})
+            })
+        }
+    }, 300, [search])
+
 
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
@@ -34,7 +40,7 @@ export default function MenuScreen({navigation, route}) {
                 inputStyle={styles.inputStyle}
             />
             <SectionList
-                sections={menu}
+                sections={place.sessions}
                 keyExtractor={(item, index) => index}
                 onEndReached={(info) => console.log(info)}
                 onEndReachedThreshold={0}
@@ -48,12 +54,16 @@ export default function MenuScreen({navigation, route}) {
                             isVisible={overlay[item.name] || false}
 
                         >
-                            <ItemMenu {...item} onPress={() => setOverlay({[item.name]: false})}/>
+                            <ItemMenu {...item}  onPress={() => setOverlay({[item.name]: false})}/>
                         </Overlay>
                     </View>
                 )}
                 renderSectionHeader={({section}) => (
-                    <Text style={styles.header}>{section.category}</Text>
+                    <View>
+                        <Text style={styles.header}>{section.name}</Text>
+                        <Text style={styles.headerEnglish}>{section.name_english}</Text>
+                    </View>
+
                 )}
                 stickySectionHeadersEnabled
             />
@@ -86,10 +96,17 @@ const styles = EStyleSheet.create({
         backgroundColor: '$white'
     },
     header: {
-        paddingVertical: '0.937rem',
+        paddingVertical: '0.1rem',
         marginLeft: '0.75rem',
         fontFamily: '$sofiaProBlack',
         fontSize: '0.937rem',
+        backgroundColor: "$white"
+    },
+    headerEnglish: {
+        paddingBottom: '0.5rem',
+        marginLeft: '0.75rem',
+        fontFamily: '$sofiaProLight',
+        fontSize: '0.7rem',
         backgroundColor: "$white"
     },
     overlayStyle: {

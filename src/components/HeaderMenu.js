@@ -1,7 +1,8 @@
 import React from "react";
-import {Image, View, Text} from "react-native";
+import {Image, Text, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Updated from "./Updated";
+import * as Linking from "expo-linking";
 
 export default function HeaderMenu({place}) {
     return (
@@ -9,7 +10,15 @@ export default function HeaderMenu({place}) {
             <Image source={{uri: place.image}} style={styles.image}/>
             <Updated modified={place.modified}/>
             <Text style={styles.title}>{place.name}</Text>
-            <Text style={styles.subTitle}>{place.address}</Text>
+            <Text
+                style={styles.subTitle}>
+                {place.address}{' - '}
+                <Text
+                    style={styles.phone}
+                    onPress={() => Linking.openURL(`tel:${place.phone}`)}>
+                    {place.phone}
+                </Text>
+            </Text>
         </View>
     )
 }
@@ -43,6 +52,12 @@ const styles = EStyleSheet.create({
         fontFamily: '$sofiaProBlack',
         fontSize: '1.25rem',
         backgroundColor: "$white"
+    }, phone: {
+        fontFamily: '$sofiaProBlack',
+        fontSize: '0.937rem',
+        color: '$black',
+        marginVertical: '0.625rem',
+        marginLeft: '0.625rem'
     }
 
 })

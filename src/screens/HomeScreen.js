@@ -11,7 +11,7 @@ export default function HomeScreen({navigation}) {
     const [search, setSearch] = useState('')
     useEffect(() => {
         getPlaces().then(({data}) => {
-            setPlaces(data.results)
+            setPlaces(data)
         }).catch()
     }, []);
 
@@ -32,8 +32,8 @@ export default function HomeScreen({navigation}) {
             />
             <FlatList
                 data={places}
-                renderItem={({item}) => <Place {...item} onPress={() => navigation.navigate('Menu', item)}/>}
-                keyExtractor={item => item.id}
+                renderItem={({item}) => <Place {...item} onPress={() => navigation.navigate('Menu', {id: item.id})}/>}
+                keyExtractor={item => item.id.toString()}
             />
         </SafeAreaView>
     );
