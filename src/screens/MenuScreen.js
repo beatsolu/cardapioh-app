@@ -1,10 +1,10 @@
-import React, {useEffect, useState,} from "react";
+import React, {useRef, useState,} from "react";
 import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {Overlay, SearchBar, Text} from "react-native-elements";
 import ModalWeb from 'modal-react-native-web'
 import {getMenu, searchItem} from "../api";
-import {Header, HeaderMenu, ItemMenu} from "../components";
+import {Header, HeaderMenu, ItemMenu, NotFound} from "../components";
 import {useDebouncedEffect} from "../hooks";
 
 
@@ -15,13 +15,20 @@ export default function MenuScreen({navigation, route}) {
     const [search, setSearch] = useState()
 
     function normalizeSessions(data) {
+        const isEmpty = !data.length;
         const results = data.length;
-        const plural = `${results > 1 ? 's:' : ':'} ${results}`
-        return [{
-            name: `Encontrado${plural}`,
-            name_english: `Found${plural}`,
-            data
-        }];
+        const plural = (word) => `${word}${results > 1 ? 's:' : ':'} ${results}`
+        let sessions;
+        if (isEmpty) {
+            sessions = []
+        } else {
+            sessions = [{
+                name: plural('Encontrado'),
+                name_english: plural('Found'),
+                data
+            }]
+        }
+        return sessions;
     }
 
     useDebouncedEffect(() => {
@@ -51,6 +58,7 @@ export default function MenuScreen({navigation, route}) {
             <SectionList
                 sections={sessions}
                 keyExtractor={(item, index) => index}
+                ListEmptyComponent={<NotFound/>}
                 ListHeaderComponent={!search && sessions.length > 0 && <HeaderMenu place={place}/>}
                 renderItem={({item}) => (
                     <View>

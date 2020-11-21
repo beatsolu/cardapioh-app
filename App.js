@@ -2,11 +2,11 @@ import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {Dimensions, Platform} from "react-native";
 import {useFonts} from "expo-font";
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from "@react-navigation/stack";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import makeServer from "./server";
-import {HomeScreen, MenuScreen, SplashScreen} from "./src/screens";
+import {SplashScreen} from "./src/screens";
+import Navigation from "./src/navigation";
+import {useAssets} from "expo-asset";
 
 const SofiaProBlack = require('./assets/fonts/SofiaPro/SofiaProBlack.otf')
 const SofiaProLight = require('./assets/fonts/SofiaPro/SofiaProLight.otf')
@@ -31,23 +31,12 @@ EStyleSheet.build({
     $sofiaProSemiBold: 'Sofia Pro Semi Bold'
 })
 
-const Stack = createStackNavigator();
-
-const config = {
-    screens: {
-        Home: '/',
-        Menu: 'menu/:id',
-    },
-};
-
-const linking = {
-    prefixes: ['cardapioh://', ''],
-    config,
-};
 
 export default function App() {
     const [isLoaded, setIsLoaded] = useState(false)
-    const Splash = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
+    useAssets([
+        require('./assets/img/notFound/notFound.png')
+    ])
     useFonts({
         'Sofia Pro Black': SofiaProBlack,
         'Sofia Pro Light': SofiaProLight,
@@ -58,17 +47,10 @@ export default function App() {
         if (Platform.OS === 'web') {
             setIsLoaded(true)
         } else {
-            Component = Splash
+            Component = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
         }
     } else {
-        Component = (
-            <NavigationContainer linking={linking}>
-                <Stack.Navigator>
-                    <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-                    <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown: false}}/>
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
+        Component = <Navigation/>
     }
     return Component
 }
