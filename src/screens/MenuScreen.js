@@ -8,7 +8,7 @@ import {Header, HeaderMenu, ItemMenu, NotFound} from "../components";
 import {useDebouncedEffect} from "../hooks";
 
 
-export default function MenuScreen({navigation, route}) {
+export default function MenuScreen({route}) {
     const [place, setPlace] = useState({})
     const [sessions, setSessions] = useState([])
     const [overlay, setOverlay] = useState({})
