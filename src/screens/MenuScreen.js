@@ -36,6 +36,7 @@ export default function MenuScreen({route}) {
         if (search) {
             searchItem(route.params.id, search).then(({data}) => {
                 setSessions(normalizeSessions(data, search))
+                searchRef.current.blur()
             })
         } else {
             getMenu(route.params.id).then(({data}) => {
