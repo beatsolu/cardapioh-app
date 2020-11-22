@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {Overlay, SearchBar, Text} from "react-native-elements";
@@ -9,8 +9,9 @@ import {useDebouncedEffect} from "../hooks";
 
 
 export default function MenuScreen({route}) {
+    const searchRef = useRef()
     const [place, setPlace] = useState({})
-    const [sessions, setSessions] = useState([])
+    const [sessions, setSessions] = useState()
     const [overlay, setOverlay] = useState({})
     const [search, setSearch] = useState()
 
@@ -34,7 +35,7 @@ export default function MenuScreen({route}) {
     useDebouncedEffect(() => {
         if (search) {
             searchItem(route.params.id, search).then(({data}) => {
-                setSessions(normalizeSessions(data))
+                setSessions(normalizeSessions(data, search))
             })
         } else {
             getMenu(route.params.id).then(({data}) => {
@@ -47,19 +48,21 @@ export default function MenuScreen({route}) {
         <SafeAreaView style={styles.safeAreaContainer}>
             <Header/>
             <SearchBar
+                ref={searchRef}
                 value={search}
-                onFocus={() => setSessions([])}
+                onFocus={() => setSessions([{data:[]}])}
+                onClear={() => searchRef.current.blur()}
                 onChangeText={setSearch}
                 placeholder="Pesquise por itens..."
                 containerStyle={styles.searchBarContainerStyle}
                 inputContainerStyle={styles.inputContainerStyle}
                 inputStyle={styles.inputStyle}
             />
-            <SectionList
+            {sessions && <SectionList
                 sections={sessions}
                 keyExtractor={(item, index) => index}
                 ListEmptyComponent={<NotFound/>}
-                ListHeaderComponent={!search && sessions.length > 0 && <HeaderMenu place={place}/>}
+                ListHeaderComponent={!search && sessions.length > 1 && <HeaderMenu place={place}/>}
                 renderItem={({item}) => (
                     <View>
                         <ItemMenu {...item} detail={false} onPress={() => setOverlay({[item.name]: true})}/>
@@ -81,7 +84,7 @@ export default function MenuScreen({route}) {
 
                 )}
                 stickySectionHeadersEnabled
-            />
+            />}
         </SafeAreaView>
     );
 }
