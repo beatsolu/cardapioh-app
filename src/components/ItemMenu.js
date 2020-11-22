@@ -6,7 +6,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 export default function ItemMenu({code, name, description, description_english, price, discount, image, detail = true, onPress}) {
     price = parseFloat(price)
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} disabled={detail}>
             <Card containerStyle={styles.container}>
                 {detail && image && <Card.Image style={styles.image} source={{uri: image}}/>}
                 <Text style={styles.title}>

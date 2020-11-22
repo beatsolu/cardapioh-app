@@ -1,4 +1,4 @@
-import React, {useRef, useState,} from "react";
+import React, {useState} from "react";
 import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {Overlay, SearchBar, Text} from "react-native-elements";
@@ -67,8 +67,9 @@ export default function MenuScreen({route}) {
                             overlayStyle={styles.overlayStyle}
                             ModalComponent={Platform.OS === 'web' ? ModalWeb : Modal}
                             isVisible={overlay[item.name] || false}
+                            onBackdropPress={() => setOverlay({[item.name]: false})}
                         >
-                            <ItemMenu {...item} onPress={() => setOverlay({[item.name]: false})}/>
+                            <ItemMenu {...item} />
                         </Overlay>
                     </View>
                 )}
