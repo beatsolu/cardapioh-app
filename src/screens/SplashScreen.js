@@ -1,8 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
-import LottieView from 'lottie-react-native';
-
+import { View, Platform } from 'react-native';
 const SplashScreen = ({onAnimationFinish}) => {
+    const LottieView = Platform.select({
+        'web': () => require('react-native-web-lottie').default,
+        'default': () => require('lottie-react-native')
+    })()
     return (
         <View
             style={{

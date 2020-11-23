@@ -44,11 +44,7 @@ export default function App() {
     });
     let Component = null;
     if (!isLoaded) {
-        if (Platform.OS === 'web') {
-            setIsLoaded(true)
-        } else {
-            Component = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
-        }
+        Component = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
     } else {
         Component = <Navigation/>
     }
