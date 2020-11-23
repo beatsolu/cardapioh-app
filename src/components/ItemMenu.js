@@ -88,7 +88,12 @@ const styles = EStyleSheet.create({
         bottom: '0.2rem',
         width: '2.8rem',
         height: '1.1rem',
-        paddingTop: '0.185rem',
+        '@media ios': {
+            paddingTop: '0.185rem',
+        },
+        '@media android': {
+            paddingTop: '0.15rem',
+        },
         paddingLeft: '0.4rem',
         includeFontPadding: false,
         textAlignVertical: 'center',
