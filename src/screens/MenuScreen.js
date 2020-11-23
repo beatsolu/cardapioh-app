@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {Overlay, SearchBar, Text} from "react-native-elements";
@@ -11,48 +11,77 @@ import {useDebouncedEffect} from "../hooks";
 export default function MenuScreen({route}) {
     const searchRef = useRef()
     const [place, setPlace] = useState({})
-    const [sessions, setSessions] = useState()
+    const [sessions, setSessions] = useState(null)
     const [overlay, setOverlay] = useState({})
     const [search, setSearch] = useState()
 
-    function normalizeSessions(data) {
-        const isEmpty = !data.length;
-        const results = data.length;
-        const plural = (word) => `${word}${results > 1 ? 's:' : ':'} ${results}`
-        let sessions;
-        if (isEmpty) {
-            sessions = []
-        } else {
-            sessions = [{
-                name: plural('Encontrado'),
-                name_english: plural('Found'),
-                data
-            }]
-        }
-        return sessions;
-    }
+    useEffect(() => {
+        _getMenu()
+    }, [])
 
     useDebouncedEffect(() => {
         if (search) {
-            searchItem(route.params.id, search).then(({data}) => {
-                setSessions(normalizeSessions(data, search))
-                searchRef.current.blur()
-            })
-        } else {
-            getMenu(route.params.id).then(({data}) => {
-                setPlace(data)
-                setSessions(data.sessions)
-            })
+            _search()
         }
-    }, 300, [search])
+    }, 500, [search])
+
+    function normalizeItems(data) {
+        let sessions = [{data:[]}]
+        if (data) {
+            const isEmpty = !data.length;
+            const results = data.length;
+            const plural = (word) => `${word}${results > 1 ? 's:' : ':'} ${results}`
+            if (isEmpty) {
+                sessions = []
+            } else {
+                sessions = [{
+                    name: plural('Encontrado'),
+                    name_english: plural('Found'),
+                    data
+                }]
+            }
+        }
+        setSessions(sessions);
+    }
+
+    function _getMenu() {
+        getMenu(route.params.id).then(({data}) => {
+            setPlace(data)
+            setSessions(data.sessions)
+        })
+    }
+
+
+    function _search() {
+        searchItem(route.params.id, search).then(({data}) => {
+            normalizeItems(data)
+        })
+
+    }
+
+    function handleOnFocus(){
+        normalizeItems()
+    }
+
+    function handleOnBlur(){
+        !search && _getMenu()
+    }
+
+    function handleOnClear(){
+        _getMenu()
+    }
+
+
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
             <Header/>
             <SearchBar
                 ref={searchRef}
                 value={search}
-                onFocus={() => setSessions([{data:[]}])}
-                onClear={() => searchRef.current.blur()}
+                onFocus={handleOnFocus}
+                onBlur={handleOnBlur}
+                onClear={handleOnClear}
+                returnKeyType={"done"}
                 onChangeText={setSearch}
                 placeholder="Pesquise por itens..."
                 containerStyle={styles.searchBarContainerStyle}
