@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Modal, Platform, SafeAreaView, SectionList, View} from "react-native";
+import {SafeAreaView, SectionList, View} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import {Overlay, SearchBar, Text} from "react-native-elements";
-import ModalWeb from 'modal-react-native-web'
+import {SearchBar, Text} from "react-native-elements";
 import {getMenu, searchItem} from "../api";
 import {Header, HeaderMenu, ItemMenu, NotFound} from "../components";
 import {useDebouncedEffect} from "../hooks";
@@ -10,10 +9,9 @@ import {useDebouncedEffect} from "../hooks";
 
 export default function MenuScreen({route}) {
     const searchRef = useRef()
-    const [place, setPlace] = useState({})
+    const [place, setPlace] = useState(null)
     const [sessions, setSessions] = useState(null)
-    const [overlay, setOverlay] = useState({})
-    const [search, setSearch] = useState()
+    const [search, setSearch] = useState(null)
 
     useEffect(() => {
         _getMenu()
@@ -26,7 +24,7 @@ export default function MenuScreen({route}) {
     }, 500, [search])
 
     function normalizeItems(data) {
-        let sessions = [{data:[]}]
+        let sessions = [{data: []}]
         if (data) {
             const isEmpty = !data.length;
             const results = data.length;
@@ -59,18 +57,17 @@ export default function MenuScreen({route}) {
 
     }
 
-    function handleOnFocus(){
+    function handleOnFocus() {
         normalizeItems()
     }
 
-    function handleOnBlur(){
+    function handleOnBlur() {
         !search && _getMenu()
     }
 
-    function handleOnClear(){
+    function handleOnClear() {
         _getMenu()
     }
-
 
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
@@ -93,25 +90,12 @@ export default function MenuScreen({route}) {
                 keyExtractor={(item, index) => index}
                 ListEmptyComponent={<NotFound/>}
                 ListHeaderComponent={!search && sessions.length > 1 && <HeaderMenu place={place}/>}
-                renderItem={({item}) => (
-                    <View>
-                        <ItemMenu {...item} detail={false} onPress={() => setOverlay({[item.name]: true})}/>
-                        <Overlay
-                            overlayStyle={styles.overlayStyle}
-                            ModalComponent={Platform.OS === 'web' ? ModalWeb : Modal}
-                            isVisible={overlay[item.name] || false}
-                            onBackdropPress={() => setOverlay({[item.name]: false})}
-                        >
-                            <ItemMenu {...item} />
-                        </Overlay>
-                    </View>
-                )}
+                renderItem={({item}) => <ItemMenu {...item} />}
                 renderSectionHeader={({section}) => (
                     <View>
                         <Text style={styles.header}>{section.name}</Text>
                         <Text style={styles.headerEnglish}>{section.name_english}</Text>
                     </View>
-
                 )}
                 stickySectionHeadersEnabled
             />}

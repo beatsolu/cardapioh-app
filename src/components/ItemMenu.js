@@ -1,36 +1,27 @@
 import React from 'react';
-import {TouchableOpacity, View} from "react-native";
+import {View} from "react-native";
 import {Card, Text} from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
+import Price from "./Price";
 
-export default function ItemMenu({code, name, description, description_english, price, discount, image, detail = true, onPress}) {
-    price = parseFloat(price)
+export default function ItemMenu({code, name, description, description_english, prices, discount, image}) {
     return (
-        <TouchableOpacity onPress={onPress} disabled={detail}>
-            <Card containerStyle={styles.container}>
-                {detail && image && <Card.Image style={styles.image} source={{uri: image}}/>}
-                <Text style={styles.title}>
-                    {`${code}. ${name}`}
-                </Text>
-                <Text style={styles.subTitle}>
-                    {description}
-                </Text>
-                <Text style={styles.subTitleEnglish}>
-                    {description_english}
-                </Text>
-                <View style={styles.priceContainer}>
-                    <Text style={[styles.price, discount && styles.priceDiscount]}>
-                        {`R$ ${price.toFixed(2)}`}
-                    </Text>
-                    {discount && (
-                        <Text style={styles.price}>
-                            {`R$ ${(price - (price * discount) / 100).toFixed(2)}`}
-                        </Text>
-                    )}
-                    {discount && <Text style={styles.discountStyle}>{`-${discount}%`}</Text>}
-                </View>
-            </Card>
-        </TouchableOpacity>
+        <Card containerStyle={styles.container}>
+            {image && <Card.Image style={styles.image} source={{uri: image}}/>}
+            <Text style={styles.title}>
+                {`${code ? `${code}.` : ''} ${name}`}
+            </Text>
+            <Text style={styles.subTitle}>
+                {description}
+            </Text>
+            <Text style={styles.subTitleEnglish}>
+                {description_english}
+            </Text>
+            <View style={styles.priceContainer}>
+                <Price discount={discount} prices={prices}/>
+                {discount && <Text style={styles.discountStyle}>{`-${discount}%`}</Text>}
+            </View>
+        </Card>
     )
 }
 
@@ -67,20 +58,6 @@ const styles = EStyleSheet.create({
         marginBottom: '0.5rem',
         color: '$grey',
         fontFamily: '$sofiaProBlack',
-    },
-    price: {
-        color: '$black',
-        fontFamily: '$sofiaProBlack',
-        marginLeft: '0.625rem',
-        marginVertical: '0.187rem'
-    },
-    priceContainer: {
-        flexDirection: 'row',
-    },
-    priceDiscount: {
-        textDecorationLine: 'line-through',
-        color: '$grey',
-        fontSize: '0.75rem'
     },
     discountStyle: {
         position: 'absolute',
