@@ -26,7 +26,7 @@ export default function Price({discount, prices}) {
             style={{flex: 1}}
             horizontal
             data={prices}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => `${index + Math.random()}`}
             renderItem={renderItem}
             ItemSeparatorComponent={() => (<Text style={styles.price}>|</Text>)}
         />
