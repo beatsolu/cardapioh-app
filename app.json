@@ -6,6 +6,9 @@
     "scheme": "cardapioh",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "web": {
+      "lang": "pt-br"
+    }
   }
 }

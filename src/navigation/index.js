@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const config = {
     screens: {
         Home: '/',
-        Menu: 'menu/:id',
+        Menu: 'menu/:id/',
     },
 };
 
