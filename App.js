@@ -1,9 +1,8 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {Dimensions, Platform} from "react-native";
+import {Dimensions} from "react-native";
 import {useFonts} from "expo-font";
 import EStyleSheet from 'react-native-extended-stylesheet';
-import makeServer from "./server";
 import {SplashScreen} from "./src/screens";
 import Navigation from "./src/navigation";
 import {useAssets} from "expo-asset";
@@ -12,12 +11,6 @@ const SofiaProBlack = require('./assets/fonts/SofiaPro/SofiaProBlack.otf')
 const SofiaProLight = require('./assets/fonts/SofiaPro/SofiaProLight.otf')
 const SofiaProSemiBold = require('./assets/fonts/SofiaPro/SofiaProSemiBold.otf')
 
-// if (process.env.NODE_ENV === "development") {
-//     if (window.server) {
-//         window.server.shutdown();
-//     }
-//     window.server = makeServer();
-// }
 
 EStyleSheet.build({
     $rem: Dimensions.get('window').width > 375 ? 18 : 16,
@@ -42,7 +35,7 @@ export default function App() {
         'Sofia Pro Light': SofiaProLight,
         'Sofia Pro Semi Bold': SofiaProSemiBold,
     });
-    let Component = null;
+    let Component;
     if (!isLoaded) {
         Component = <SplashScreen onAnimationFinish={() => setIsLoaded(true)}/>;
     } else {
