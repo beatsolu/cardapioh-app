@@ -34,7 +34,7 @@ export default function MenuScreen({route}) {
             } else {
                 sessions = [{
                     name: plural('Encontrado'),
-                    name_english: plural('Found'),
+                    sub_name: plural('Found'),
                     data
                 }]
             }
@@ -94,7 +94,7 @@ export default function MenuScreen({route}) {
                 renderSectionHeader={({section}) => (
                     <View>
                         <Text style={styles.header}>{section.name}</Text>
-                        <Text style={styles.headerEnglish}>{section.name_english}</Text>
+                        <Text style={styles.headerEnglish}>{section.sub_name}</Text>
                     </View>
                 )}
                 stickySectionHeadersEnabled

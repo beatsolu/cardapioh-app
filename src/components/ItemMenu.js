@@ -4,19 +4,15 @@ import {Card, Text} from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Price from "./Price";
 
-export default function ItemMenu({code, name, description, description_english, prices, discount, image}) {
+export default function ItemMenu({code, name, description, sub_description, prices, discount, image}) {
     return (
         <Card containerStyle={styles.container}>
             {image && <Card.Image style={styles.image} source={{uri: image}}/>}
             <Text style={styles.title}>
                 {`${code ? `${code}.` : ''} ${name}`}
             </Text>
-            <Text style={styles.subTitle}>
-                {description}
-            </Text>
-            <Text style={styles.subTitleEnglish}>
-                {description_english}
-            </Text>
+            {!!description && <Text style={styles.subTitle}> {description}</Text>}
+            {!!sub_description && <Text style={styles.subTitleEnglish}> {sub_description} </Text>}
             <View style={styles.priceContainer}>
                 <Price discount={discount} prices={prices}/>
                 {discount && <Text style={styles.discountStyle}>{`-${discount}%`}</Text>}

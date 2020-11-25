@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const config = {
     screens: {
         Home: '/',
-        Menu: 'menu/:id/',
+        Cardapioh: 'menu/:id/',
     },
 };
 
@@ -25,7 +25,7 @@ export default function Navigation() {
         <NavigationContainer linking={linking}>
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-                <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="Cardapioh" component={MenuScreen} options={{headerShown: false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

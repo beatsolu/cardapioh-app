@@ -32,7 +32,7 @@ export default function HomeScreen({navigation}) {
             />
             <FlatList
                 data={places}
-                renderItem={({item}) => <Place {...item} onPress={() => navigation.navigate('Menu', {id: item.id})}/>}
+                renderItem={({item}) => <Place {...item} onPress={() => navigation.navigate('Cardapioh', {id: item.id})}/>}
                 keyExtractor={item => item.id.toString()}
             />
         </SafeAreaView>
