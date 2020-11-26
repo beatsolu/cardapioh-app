@@ -10,7 +10,7 @@ import {useDebouncedEffect} from "../hooks";
 export default function MenuScreen({route}) {
     const searchRef = useRef()
     const [place, setPlace] = useState(null)
-    const [sessions, setSessions] = useState(null)
+    const [sections, setSections] = useState(null)
     const [search, setSearch] = useState(null)
 
     useEffect(() => {
@@ -24,28 +24,28 @@ export default function MenuScreen({route}) {
     }, 500, [search])
 
     function normalizeItems(data) {
-        let sessions = [{data: []}]
+        let sections = [{data: []}]
         if (data) {
             const isEmpty = !data.length;
             const results = data.length;
             const plural = (word) => `${word}${results > 1 ? 's:' : ':'} ${results}`
             if (isEmpty) {
-                sessions = []
+                sections = []
             } else {
-                sessions = [{
+                sections = [{
                     name: plural('Encontrado'),
                     sub_name: plural('Found'),
                     data
                 }]
             }
         }
-        setSessions(sessions);
+        setSections(sections);
     }
 
     function _getMenu() {
-        getMenu(route.params.id).then(({data}) => {
+        getMenu(route.params.slug).then(({data}) => {
             setPlace(data)
-            setSessions(data.sessions)
+            setSections(data.sections)
         })
     }
 
@@ -85,11 +85,11 @@ export default function MenuScreen({route}) {
                 inputContainerStyle={styles.inputContainerStyle}
                 inputStyle={styles.inputStyle}
             />
-            {sessions && <SectionList
-                sections={sessions}
+            {sections && <SectionList
+                sections={sections}
                 keyExtractor={(item, index) => index}
                 ListEmptyComponent={<NotFound/>}
-                ListHeaderComponent={!search && sessions.length > 1 && <HeaderMenu place={place}/>}
+                ListHeaderComponent={!search && sections.length > 1 && <HeaderMenu place={place}/>}
                 renderItem={({item}) => <ItemMenu {...item} />}
                 renderSectionHeader={({section}) => (
                     <View>

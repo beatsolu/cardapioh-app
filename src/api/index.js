@@ -20,8 +20,8 @@ const getPlaces = async () => {
     return await api.get('/api/places/');
 };
 
-const getMenu = async (id) => {
-    return await api.get(`/api/places/${id}/`);
+const getMenu = async (slug) => {
+    return await api.get(`/api/places/${slug}/`);
 };
 
 const searchItem = async (session, search) => {

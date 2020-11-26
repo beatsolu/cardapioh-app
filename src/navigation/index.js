@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const config = {
     screens: {
         Home: '/',
-        Cardapioh: 'cardapioh/:id/',
+        Cardapioh: 'cardapioh/:slug/',
     },
 };
 

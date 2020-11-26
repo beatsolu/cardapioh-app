@@ -6,7 +6,7 @@ export default function NotFound() {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../../assets/img/notFound/notFound.png')}/>
+            <Image style={styles.notFound} source={require('../../assets/img/notFound/notFound.png')}/>
             <Text style={styles.title}>Não temos o que está procurando!</Text>
             <Text style={styles.subTitle}>We don't have what you're looking for!</Text>
         </View>)
@@ -28,5 +28,9 @@ const styles = EStyleSheet.create({
         color: '$grey',
         fontFamily: '$sofiaProLight',
     },
+    notFound: {
+        width: '13rem',
+        height: '8rem',
+    }
 
 })
