@@ -89,7 +89,7 @@ export default function MenuScreen({route}) {
                 sections={sections}
                 keyExtractor={(item, index) => index}
                 ListEmptyComponent={<NotFound/>}
-                ListHeaderComponent={!search && sections.length > 1 && <HeaderMenu place={place}/>}
+                ListHeaderComponent={!search && sections[0].data.length > 0 && <HeaderMenu place={place}/>}
                 renderItem={({item}) => <ItemMenu {...item} />}
                 renderSectionHeader={({section}) => (
                     <View>
