@@ -51,7 +51,7 @@ export default function MenuScreen({route}) {
 
 
     function _search() {
-        searchItem(route.params.id, search).then(({data}) => {
+        searchItem(place.id, search).then(({data}) => {
             normalizeItems(data)
         })
 
