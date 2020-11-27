@@ -10,7 +10,7 @@ export default function Place({name, address, phone, image, modified, onPress}) 
     return (
         <TouchableOpacity onPress={onPress}>
             <Card containerStyle={styles.container}>
-                <Card.Image source={{uri: image}}/>
+                <Card.Image style={styles.image} source={{uri: image}}/>
                 <Updated modified={modified}/>
                 <Card.FeaturedTitle style={styles.title}>
                     <Text style={styles.title}>{name}</Text>
@@ -32,10 +32,6 @@ const styles = EStyleSheet.create({
         borderWidth: 1,
         borderColor: "$black",
     },
-    innerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
     title: {
         fontFamily: '$sofiaProBlack',
         fontSize: '1.562rem',
@@ -50,12 +46,15 @@ const styles = EStyleSheet.create({
         marginVertical: '0.625rem',
         marginLeft: '0.625rem'
     },
-    phone:{
+    phone: {
         fontFamily: '$sofiaProBlack',
         fontSize: '0.937rem',
         color: '$black',
         marginVertical: '0.625rem',
         marginLeft: '0.625rem'
+    },
+    image: {
+        height: '18.75rem'
     }
 
 })

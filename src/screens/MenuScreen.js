@@ -69,6 +69,25 @@ export default function MenuScreen({route}) {
         _getMenu()
     }
 
+    function renderSectionList() {
+        return (
+            <SectionList
+                sections={sections}
+                keyExtractor={(item, index) => index}
+                ListEmptyComponent={<NotFound/>}
+                ListHeaderComponent={!search && sections && sections[0].data.length > 0 && <HeaderMenu place={place}/>}
+                renderItem={({item}) => <ItemMenu {...item} />}
+                renderSectionHeader={({section}) => (
+                    <View style={sections && sections[0].data.length > 0 && {backgroundColor: '#f3f3f3'}}>
+                        <Text style={styles.sectionName}>{section.name}</Text>
+                        <Text style={styles.sectionSubName}>{section.sub_name}</Text>
+                    </View>
+                )}
+                stickySectionHeadersEnabled
+            />
+        )
+    }
+
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
             <Header/>
@@ -85,20 +104,7 @@ export default function MenuScreen({route}) {
                 inputContainerStyle={styles.inputContainerStyle}
                 inputStyle={styles.inputStyle}
             />
-            {sections && <SectionList
-                sections={sections}
-                keyExtractor={(item, index) => index}
-                ListEmptyComponent={<NotFound/>}
-                ListHeaderComponent={!search && sections[0].data.length > 0 && <HeaderMenu place={place}/>}
-                renderItem={({item}) => <ItemMenu {...item} />}
-                renderSectionHeader={({section}) => (
-                    <View>
-                        <Text style={styles.header}>{section.name}</Text>
-                        <Text style={styles.headerEnglish}>{section.sub_name}</Text>
-                    </View>
-                )}
-                stickySectionHeadersEnabled
-            />}
+            {sections && renderSectionList()}
         </SafeAreaView>
     );
 }
@@ -127,19 +133,18 @@ const styles = EStyleSheet.create({
     inputStyle: {
         backgroundColor: '$white'
     },
-    header: {
-        paddingVertical: '0.1rem',
+    sectionName: {
+        marginTop: '1rem',
         marginLeft: '0.75rem',
         fontFamily: '$sofiaProBlack',
         fontSize: '0.937rem',
-        backgroundColor: "$white"
     },
-    headerEnglish: {
+    sectionSubName: {
+        marginTop: '0.2rem',
         paddingBottom: '0.5rem',
         marginLeft: '0.75rem',
         fontFamily: '$sofiaProLight',
         fontSize: '0.7rem',
-        backgroundColor: "$white"
     },
     overlayStyle: {
         width: '22rem'

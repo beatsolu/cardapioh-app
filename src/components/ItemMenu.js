@@ -11,15 +11,16 @@ export default function ItemMenu({code, name, description, sub_description, pric
             <Text style={styles.title}>
                 {`${code ? `${code}.` : ''} ${name}`}
             </Text>
-            {!!description && <Text style={styles.subTitle}> {description}</Text>}
-            {!!sub_description && <Text style={styles.subTitleEnglish}> {sub_description} </Text>}
+            {!!description && <Text style={styles.description}> {description}</Text>}
+            {!!sub_description && <Text style={styles.subDescription}> {sub_description} </Text>}
             <View style={styles.priceContainer}>
                 <Price discount={discount} prices={prices}/>
-                {discount && <Text style={styles.discountStyle}>{`-${discount}%`}</Text>}
+                {discount && <Text style={styles.discount}>{`-${discount}%`}</Text>}
             </View>
         </Card>
     )
 }
+
 
 const styles = EStyleSheet.create({
     container: {
@@ -31,10 +32,6 @@ const styles = EStyleSheet.create({
     image: {
         height: '11.25rem',
     },
-    innerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
     title: {
         fontSize: '0.937rem',
         color: '$black',
@@ -43,19 +40,19 @@ const styles = EStyleSheet.create({
         marginLeft: '0.625rem',
         marginBottom: '0.5rem',
     },
-    subTitle: {
+    description: {
         marginLeft: '0.8rem',
         marginBottom: '0.5rem',
         color: '$grey',
         fontFamily: '$sofiaProLight',
     },
-    subTitleEnglish: {
+    subDescription: {
         marginLeft: '0.8rem',
         marginBottom: '0.5rem',
         color: '$grey',
         fontFamily: '$sofiaProBlack',
     },
-    discountStyle: {
+    discount: {
         position: 'absolute',
         right: '0.2rem',
         bottom: '0.2rem',
